@@ -20,6 +20,8 @@ export interface ReflowOptions {
 function buildPlugin(): () => PluginObj<PluginPass<VisitorNodes>> {
   return () => ({
     name: 'reflow',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore Type instantiation is excessively deep and possibly infinite. ts(2589)
     visitor: {
       ArrowFunctionExpression: functionVisitor,
       ClassDeclaration: classDeclarationVisitor,
