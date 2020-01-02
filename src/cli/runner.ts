@@ -35,6 +35,10 @@ export function transpileFiles(args: CommandLineArgs): string[] {
   const babelOptions = getTransformOptions({ pluginOptions });
 
   const writtenFiles: string[] = [];
+  let transpiledCount = 0;
+  let totalCount = 0;
+  let formatErrors = 0;
+  let transpileErrors = 0;
 
   sources.forEach(source => {
     const isDir = statSync(source).isDirectory();
@@ -48,7 +52,7 @@ export function transpileFiles(args: CommandLineArgs): string[] {
       if (!isValidSource(inputFile)) {
         return;
       }
-
+      totalCount++;
       console.log(`Transpiling ${inputFile}...`);
 
       try {
@@ -56,6 +60,7 @@ export function transpileFiles(args: CommandLineArgs): string[] {
 
         if (out === null || !out.code) {
           logError(`Unable to transpile ${inputFile}`, 4);
+          transpileErrors++;
         } else {
           const outputFile = process.env.DEBUG
             ? inputFile
@@ -67,27 +72,32 @@ export function transpileFiles(args: CommandLineArgs): string[] {
           if (output instanceof Error) {
             logError(`${inputFile} could not be formatted. Skipping.`, 4);
             logError(output.message, 4);
+            formatErrors++;
             return;
           }
 
+          transpiledCount++;
           if (dryRun) {
             console.log(output);
             printRuler();
           } else {
+            writeFileSync(outputFile, output);
+            writtenFiles.push(outputFile);
             if (replace) {
               unlinkSync(inputFile);
             }
-
-            writeFileSync(outputFile, output);
-            writtenFiles.push(outputFile);
           }
         }
       } catch (error) {
         logError(`${inputFile} could not be transpiled. Skipping.`, 4);
         logError(error.message, 4);
+        transpileErrors++;
       }
     });
   });
+  console.log(
+    `Transpiled ${transpiledCount} out of ${totalCount} files (${transpileErrors} transpilation errors, ${formatErrors} formatting errors)`,
+  );
 
   return writtenFiles;
 }

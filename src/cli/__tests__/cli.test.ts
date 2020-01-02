@@ -2,15 +2,15 @@ import { resolve } from 'path';
 
 import { transpileFiles } from '../runner';
 import { existsSync, unlinkSync } from 'fs';
+import * as log from '../../util/log';
 
-const consoleError = jest.spyOn(console, 'error').mockImplementation();
 const consoleLog = jest.spyOn(console, 'log').mockImplementation();
+const logError = jest.spyOn(log, 'logError').mockImplementation();
 
 const baseDir = resolve('src/cli/__tests__/__fixtures__/');
 
 describe('The CLI', () => {
   afterEach(() => {
-    consoleError.mockReset();
     consoleLog.mockReset();
   });
 
@@ -76,7 +76,7 @@ describe('The CLI', () => {
       sources: [`${baseDir}/syntax-error.js`],
     });
 
-    expect(consoleError).toHaveBeenCalled();
+    expect(logError).toHaveBeenCalled();
     expect(writtenFiles).toHaveLength(0);
   });
 

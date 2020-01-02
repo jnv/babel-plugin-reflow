@@ -9,5 +9,5 @@ export function printRuler(length = 80): void {
 }
 
 export function logError(message: string, indent = 0): void {
-  console.error(`${blank(indent)}🔥 ${chalk.bold.redBright('Error')}: ${chalk.reset(message)}`);
+  console.log(`${blank(indent)}🔥 ${chalk.bold.redBright('Error')}: ${chalk.reset(message)}`);
 }
