@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-reflow",
+  "name": "@jnv/babel-plugin-reflow",
   "version": "0.4.2",
   "description": "Babel plugin to transpile Flow code to TypeScript",
   "author": "Jonathan Gruber <gruberjonathan@gmail.com>",
@@ -10,7 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/grubersjoe/reflow.git"
+    "url": "https://github.com/jnv/babel-plugin-reflow.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "bugs": "https://github.com/grubersjoe/reflow/issues",
   "files": [
